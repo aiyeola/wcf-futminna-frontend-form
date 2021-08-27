@@ -14,6 +14,7 @@ import Department from '@components/Department';
 import validator from '@helpers/validator';
 import Email from '@components/Email';
 import SchoolAddress from '@components/SchoolAddress';
+import HomeAddress from '@components/HomeAddress';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -231,6 +232,14 @@ export default function Form() {
             })
           : nextStep();
         break;
+      case 5:
+        homeAddress.length === 0
+          ? setErrors({
+              ...errors,
+              homeAddress: "C'mon we can give you a surprise visit",
+            })
+          : nextStep();
+        break;
     }
   };
 
@@ -283,6 +292,12 @@ export default function Form() {
           />
           <SchoolAddress
             schoolAddress={schoolAddress}
+            handleChange={handleChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
+          <HomeAddress
+            homeAddress={homeAddress}
             handleChange={handleChange}
             handleStepChange={handleStepChange}
             errors={errors}

@@ -26,7 +26,7 @@ const schema = {
   campus: yup.string().required(messages.required),
   email: yup.string().email().required(messages.required),
   schoolAddress: yup.string().required(messages.required),
-  homeAddress: yup.string().min(3, messages.short),
+  homeAddress: yup.string().required(messages.required),
   contactNumber1: yup.string().matches(/^[0-9]{10}$/, messages.phone),
   contactNumber2: yup.string().matches(/^[0-9]{10}$/, messages.phone),
   unit: yup.string().min(3, messages.short),
