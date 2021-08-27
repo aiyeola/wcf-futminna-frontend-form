@@ -7,6 +7,9 @@ import '@fontsource/poppins/600.css';
 import '@fontsource/poppins/700.css';
 import '@fontsource/poppins/800.css';
 import '@fontsource/poppins/900.css';
+import '@fontsource/crimson-pro';
+import '@fontsource/crimson-pro/500.css';
+import '@fontsource/crimson-pro/600.css';
 import grey from '@material-ui/core/colors/grey';
 
 import {
@@ -18,11 +21,14 @@ import {
 let theme: Theme = createTheme({
   palette: {
     primary: {
-      main: grey[400],
+      main: grey[800],
     },
   },
   typography: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Crimson Pro',
+    h3: {
+      fontFamily: 'Poppins',
+    },
   },
   props: {
     MuiLink: {
@@ -64,13 +70,29 @@ let theme: Theme = createTheme({
       },
     },
     MuiButton: {
-      root: {
+      contained: {
+        fontSize: 18,
         textTransform: 'none',
+        color: '#fff',
+        backgroundColor: '#f12424',
       },
     },
     MuiListItemIcon: {
       root: {
         minWidth: 40,
+      },
+    },
+    MuiFormHelperText: {
+      root: {
+        '&.Mui-error': {
+          position: 'absolute',
+          marginTop: 40,
+        },
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        fontWeight: 600,
       },
     },
   },
