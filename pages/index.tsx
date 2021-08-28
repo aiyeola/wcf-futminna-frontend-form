@@ -18,6 +18,7 @@ import HomeAddress from '@components/HomeAddress';
 import Level from '@components/Level';
 import ContactNumber from '@components/ContactNumber';
 import AlternateNumber from '@components/AlternateNumber';
+import Gender from '@components/Gender';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -200,9 +201,9 @@ export default function Form() {
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = async (
     e,
   ) => {
-    const { id, value } = e.target;
-    setDetails({ ...details, [id]: value });
-    setErrors({ ...errors, [id]: await validate(id, value) });
+    const { id, value, name } = e.target;
+    setDetails({ ...details, [id || name]: value });
+    setErrors({ ...errors, [id || name]: await validate(id || name, value) });
   };
 
   const handleStepChange = (currentStep: number, nextStep: () => void) => {
@@ -217,16 +218,23 @@ export default function Form() {
         }
         break;
       case 2:
+        if (gender.length === 0) {
+          setErrors({ ...errors, gender: 'This field is required' });
+        } else {
+          nextStep();
+        }
+        break;
+      case 3:
         department.length === 0
           ? setErrors({ ...errors, department: 'You no get department? 😏' })
           : nextStep();
         break;
-      case 3:
+      case 4:
         email.length === 0
           ? setErrors({ ...errors, email: 'Shey you dey whine us??' })
           : nextStep();
         break;
-      case 4:
+      case 5:
         schoolAddress.length === 0
           ? setErrors({
               ...errors,
@@ -234,7 +242,7 @@ export default function Form() {
             })
           : nextStep();
         break;
-      case 5:
+      case 6:
         homeAddress.length === 0
           ? setErrors({
               ...errors,
@@ -242,7 +250,7 @@ export default function Form() {
             })
           : nextStep();
         break;
-      case 6:
+      case 7:
         level.length === 1 || level === ''
           ? setErrors({
               ...errors,
@@ -250,7 +258,7 @@ export default function Form() {
             })
           : nextStep();
         break;
-      case 7:
+      case 8:
         if (contactNumber1 === undefined) {
           setErrors({
             ...errors,
@@ -265,7 +273,7 @@ export default function Form() {
           nextStep();
         }
         break;
-      case 8:
+      case 9:
         if (errors.contactNumber2) {
           setErrors({
             ...errors,
@@ -314,6 +322,12 @@ export default function Form() {
           <Name
             firstName={firstName}
             lastName={lastName}
+            handleChange={handleChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
+          <Gender
+            gender={gender}
             handleChange={handleChange}
             handleStepChange={handleStepChange}
             errors={errors}
