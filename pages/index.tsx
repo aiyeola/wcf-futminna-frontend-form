@@ -15,6 +15,7 @@ import validator from '@helpers/validator';
 import Email from '@components/Email';
 import SchoolAddress from '@components/SchoolAddress';
 import HomeAddress from '@components/HomeAddress';
+import Level from '@components/Level';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -95,7 +96,7 @@ type FormState = {
   lastName: string;
   gender: string;
   department: string;
-  level: number;
+  level: string;
   campus: string;
   email: string;
   schoolAddress: string;
@@ -134,7 +135,7 @@ export default function Form() {
     lastName: '',
     gender: '',
     department: '',
-    level: 0,
+    level: '',
     campus: '',
     email: '',
     schoolAddress: '',
@@ -198,6 +199,8 @@ export default function Form() {
     e,
   ) => {
     const { id, value } = e.target;
+    console.log('id: ', id);
+    console.log('value: ', value);
     setDetails({ ...details, [id]: value });
     setErrors({ ...errors, [id]: await validate(id, value) });
   };
@@ -237,6 +240,14 @@ export default function Form() {
           ? setErrors({
               ...errors,
               homeAddress: "C'mon we can give you a surprise visit",
+            })
+          : nextStep();
+        break;
+      case 6:
+        level.length === 1 || level === ''
+          ? setErrors({
+              ...errors,
+              level: '😏 ehn ehn!',
             })
           : nextStep();
         break;
@@ -298,6 +309,12 @@ export default function Form() {
           />
           <HomeAddress
             homeAddress={homeAddress}
+            handleChange={handleChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
+          <Level
+            level={level}
             handleChange={handleChange}
             handleStepChange={handleStepChange}
             errors={errors}

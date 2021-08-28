@@ -48,6 +48,7 @@ let theme: Theme = createTheme({
     MuiFormControl: {
       size: 'small',
       variant: 'outlined',
+      fullWidth: true,
     },
     MuiCircularProgress: {
       size: 24,
