@@ -19,6 +19,7 @@ import Level from '@components/Level';
 import ContactNumber from '@components/ContactNumber';
 import AlternateNumber from '@components/AlternateNumber';
 import Gender from '@components/Gender';
+import Campus from '@components/Campus';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -230,11 +231,21 @@ export default function Form() {
           : nextStep();
         break;
       case 4:
+        level.length === 1 || level === ''
+          ? setErrors({ ...errors, level: '😏 ehn ehn!' })
+          : nextStep();
+        break;
+      case 5:
+        campus.length === 0
+          ? setErrors({ ...errors, campus: 'so you no get Campus 🙁' })
+          : nextStep();
+        break;
+      case 6:
         email.length === 0
           ? setErrors({ ...errors, email: 'Shey you dey whine us??' })
           : nextStep();
         break;
-      case 5:
+      case 7:
         schoolAddress.length === 0
           ? setErrors({
               ...errors,
@@ -242,7 +253,7 @@ export default function Form() {
             })
           : nextStep();
         break;
-      case 6:
+      case 8:
         homeAddress.length === 0
           ? setErrors({
               ...errors,
@@ -250,35 +261,18 @@ export default function Form() {
             })
           : nextStep();
         break;
-      case 7:
-        level.length === 1 || level === ''
-          ? setErrors({
-              ...errors,
-              level: '😏 ehn ehn!',
-            })
-          : nextStep();
-        break;
-      case 8:
+      case 9:
         if (contactNumber1 === undefined) {
-          setErrors({
-            ...errors,
-            contactNumber1: '😏 ehn ehn!',
-          });
+          setErrors({ ...errors, contactNumber1: '😏 ehn ehn!' });
         } else if (errors.contactNumber1) {
-          setErrors({
-            ...errors,
-            contactNumber1: '😏 ehn ehn!',
-          });
+          setErrors({ ...errors, contactNumber1: '😏 ehn ehn!' });
         } else {
           nextStep();
         }
         break;
-      case 9:
+      case 10:
         if (errors.contactNumber2) {
-          setErrors({
-            ...errors,
-            contactNumber2: '😏 ehn ehn!',
-          });
+          setErrors({ ...errors, contactNumber2: '😏 ehn ehn!' });
         } else if (contactNumber1 === contactNumber2) {
           setErrors({
             ...errors,
@@ -338,6 +332,18 @@ export default function Form() {
             handleStepChange={handleStepChange}
             errors={errors}
           />
+          <Level
+            level={level}
+            handleChange={handleChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
+          <Campus
+            campus={campus}
+            handleChange={handleChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
           <Email
             email={email}
             handleChange={handleChange}
@@ -356,12 +362,7 @@ export default function Form() {
             handleStepChange={handleStepChange}
             errors={errors}
           />
-          <Level
-            level={level}
-            handleChange={handleChange}
-            handleStepChange={handleStepChange}
-            errors={errors}
-          />
+
           <ContactNumber
             contactNumber1={contactNumber1}
             handleChange={handleChange}
