@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 import theme from 'src/theme';
+import '@styles/global.css';
 
 const queryClient = new QueryClient();
 

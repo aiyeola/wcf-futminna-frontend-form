@@ -16,6 +16,8 @@ import Email from '@components/Email';
 import SchoolAddress from '@components/SchoolAddress';
 import HomeAddress from '@components/HomeAddress';
 import Level from '@components/Level';
+import ContactNumber from '@components/ContactNumber';
+import AlternateNumber from '@components/AlternateNumber';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -101,7 +103,7 @@ type FormState = {
   email: string;
   schoolAddress: string;
   homeAddress: string;
-  contactNumber1: number;
+  contactNumber1: number | undefined;
   contactNumber2?: number;
   unit: string;
   origin: string;
@@ -140,8 +142,8 @@ export default function Form() {
     email: '',
     schoolAddress: '',
     homeAddress: '',
-    contactNumber1: 0,
-    contactNumber2: 0,
+    contactNumber1: undefined,
+    contactNumber2: undefined,
     unit: '',
     origin: '',
     dob: '',
@@ -199,14 +201,11 @@ export default function Form() {
     e,
   ) => {
     const { id, value } = e.target;
-    console.log('id: ', id);
-    console.log('value: ', value);
     setDetails({ ...details, [id]: value });
     setErrors({ ...errors, [id]: await validate(id, value) });
   };
 
   const handleStepChange = (currentStep: number, nextStep: () => void) => {
-    console.log('currentStep: ', currentStep);
     switch (currentStep) {
       case 1:
         if (firstName.length === 0) {
@@ -250,6 +249,36 @@ export default function Form() {
               level: '😏 ehn ehn!',
             })
           : nextStep();
+        break;
+      case 7:
+        if (contactNumber1 === undefined) {
+          setErrors({
+            ...errors,
+            contactNumber1: '😏 ehn ehn!',
+          });
+        } else if (errors.contactNumber1) {
+          setErrors({
+            ...errors,
+            contactNumber1: '😏 ehn ehn!',
+          });
+        } else {
+          nextStep();
+        }
+        break;
+      case 8:
+        if (errors.contactNumber2) {
+          setErrors({
+            ...errors,
+            contactNumber2: '😏 ehn ehn!',
+          });
+        } else if (contactNumber1 === contactNumber2) {
+          setErrors({
+            ...errors,
+            contactNumber2: "that's the same as before nah",
+          });
+        } else {
+          nextStep();
+        }
         break;
     }
   };
@@ -315,6 +344,18 @@ export default function Form() {
           />
           <Level
             level={level}
+            handleChange={handleChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
+          <ContactNumber
+            contactNumber1={contactNumber1}
+            handleChange={handleChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
+          <AlternateNumber
+            contactNumber2={contactNumber2}
             handleChange={handleChange}
             handleStepChange={handleStepChange}
             errors={errors}
