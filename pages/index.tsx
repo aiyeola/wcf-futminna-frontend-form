@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import StepWizard, {
-  StepWizardChildProps,
-  StepWizardProps,
-} from 'react-step-wizard';
+import StepWizard from 'react-step-wizard';
 import clsx from 'clsx';
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { DateType } from '@date-io/type';
+import DateFnsAdapter from '@date-io/date-fns';
 
 import Name from '@components/Name';
 import Department from '@components/Department';
@@ -20,6 +18,9 @@ import ContactNumber from '@components/ContactNumber';
 import AlternateNumber from '@components/AlternateNumber';
 import Gender from '@components/Gender';
 import Campus from '@components/Campus';
+import Unit from '@components/Unit';
+import DateOfBirth from '@components/DateOfBirth';
+import compareDates from '@helpers/dateCompare';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -33,9 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100vw',
     height: '40vh',
-    // position: 'absolute',
     [theme.breakpoints.down(600)]: {
       padding: '0 2rem',
     },
@@ -49,9 +48,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     [theme.breakpoints.down(376)]: {
       marginTop: 0,
     },
-  },
-  textField: {
-    // width: '15rem',
   },
   margin: {
     marginBottom: theme.spacing(3),
@@ -75,24 +71,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     minHeight: '100vh',
     maxHeight: '100%',
   },
-  stepWizard: {
-    // background: 'red',
-    // width: '100%'
-  },
 }));
 
 type stepChange = {
   previousStep: number;
   activeStep: number;
-};
-
-type ControlButtonsProps = {
-  StepWiz: Partial<StepWizardChildProps>;
-};
-
-type State = {
-  SW?: Partial<StepWizardChildProps>;
-  demo: boolean;
 };
 
 type FormState = {
@@ -106,33 +89,17 @@ type FormState = {
   schoolAddress: string;
   homeAddress: string;
   contactNumber1: number | undefined;
-  contactNumber2?: number;
-  unit: string;
+  contactNumber2?: string;
   origin: string;
-  dob: string;
+  dob: DateType;
 };
 
-const ControlButtons = ({ StepWiz }: ControlButtonsProps) => (
-  <>
-    {/* <Button onClick={StepWiz.previousStep}>Prev Step</Button> */}
-    <Button
-      style={{
-        width: 'auto',
-      }}
-      onClick={StepWiz.nextStep}
-    >
-      Next Step
-    </Button>
-  </>
-);
 export default function Form() {
   const classes = useStyles();
   const theme = useTheme();
   const matchesSM = useMediaQuery(theme.breakpoints.down(430));
 
-  const [state, updateState] = useState<State>({
-    demo: true,
-  });
+  const dateFns = new DateFnsAdapter();
 
   const [details, setDetails] = useState<FormState>({
     firstName: '',
@@ -145,11 +112,11 @@ export default function Form() {
     schoolAddress: '',
     homeAddress: '',
     contactNumber1: undefined,
-    contactNumber2: undefined,
-    unit: '',
+    contactNumber2: '',
     origin: '',
-    dob: '',
+    dob: dateFns.date(new Date(2007, 11, 12)),
   });
+
   const {
     firstName,
     lastName,
@@ -162,9 +129,8 @@ export default function Form() {
     homeAddress,
     contactNumber1,
     contactNumber2,
-    unit,
-    origin,
     dob,
+    origin,
   } = details;
 
   const [errors, setErrors] = useState({
@@ -184,30 +150,62 @@ export default function Form() {
     dob: undefined,
   });
 
-  const { SW, demo } = state;
+  const [unit, setUnit] = useState({
+    choir: false,
+    ushering: false,
+    media: false,
+    drama: false,
+    technical: false,
+    sanctuary: false,
+    prayer: false,
+    evangelism: false,
+    academic: false,
+  });
+
+  const {
+    choir,
+    ushering,
+    media,
+    drama,
+    technical,
+    sanctuary,
+    prayer,
+    evangelism,
+    academic,
+  } = unit;
 
   const onStepChange = (stepChange: stepChange) => console.log(stepChange);
-
-  const setInstance = (SW: StepWizardProps) =>
-    updateState({
-      ...state,
-      SW,
-    });
 
   const validate = async (id: string, value: string) => {
     const { error } = await validator(id, value);
     return error;
   };
 
+  const handleUnitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setUnit({ ...unit, [name]: checked });
+    setErrors({ ...errors, unit: undefined });
+  };
+
+  const handleDateChange = (date: DateType) => {
+    setDetails({ ...details, dob: date });
+    setErrors({ ...errors, dob: undefined });
+  };
+
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = async (
     e,
   ) => {
     const { id, value, name } = e.target;
+    console.log('id: ', id);
+    console.log('name: ', name);
+    console.log('value: ', value);
+    console.log('value: ', typeof value);
     setDetails({ ...details, [id || name]: value });
     setErrors({ ...errors, [id || name]: await validate(id || name, value) });
   };
 
   const handleStepChange = (currentStep: number, nextStep: () => void) => {
+    console.log('currentStep: ', currentStep);
     switch (currentStep) {
       case 1:
         if (firstName.length === 0) {
@@ -237,7 +235,7 @@ export default function Form() {
         break;
       case 5:
         campus.length === 0
-          ? setErrors({ ...errors, campus: 'so you no get Campus 🙁' })
+          ? setErrors({ ...errors, campus: 'So you no get campus 🙁' })
           : nextStep();
         break;
       case 6:
@@ -271,19 +269,57 @@ export default function Form() {
         }
         break;
       case 10:
-        if (errors.contactNumber2) {
-          setErrors({ ...errors, contactNumber2: '😏 ehn ehn!' });
-        } else if (contactNumber1 === contactNumber2) {
+        if (contactNumber2.length === 0) {
+          nextStep();
+        } else if ((contactNumber1 as unknown) === contactNumber2) {
           setErrors({
             ...errors,
             contactNumber2: "that's the same as before nah",
           });
+        } else if (errors.contactNumber2) {
+          setErrors({ ...errors, contactNumber2: '😏 ehn ehn!' });
+        } else if (errors.contactNumber2 && contactNumber2.length === 0) {
+          nextStep();
+        } else {
+          nextStep();
+        }
+        break;
+      case 11:
+        const error =
+          [
+            choir,
+            ushering,
+            media,
+            drama,
+            technical,
+            sanctuary,
+            prayer,
+            evangelism,
+            academic,
+          ].filter((v) => v).length === 0;
+        if (error) {
+          setErrors({ ...errors, unit: 'No tell me say you no dey unit' });
+        } else {
+          nextStep();
+        }
+        break;
+      case 12:
+        if (compareDates(dob, dateFns.date(new Date(2007, 11, 12)))) {
+          setErrors({ ...errors, dob: '😏 ehn ehn!' });
+        } else if (errors.dob) {
+          setErrors({ ...errors, dob: 'Kindly pick a valid date' });
         } else {
           nextStep();
         }
         break;
     }
   };
+
+  // const handleSubmit = () => {
+  //   const selectedUnits = Object.entries(unit)
+  //     .filter((unit) => unit[1] === true && unit)
+  //     .map((unit) => unit[0]);
+  // };
 
   return (
     <div className={clsx(classes.root, classes.background)}>
@@ -308,11 +344,7 @@ export default function Form() {
       </div>
 
       <div className={clsx(classes.center, classes.screen)}>
-        <StepWizard
-          instance={setInstance}
-          onStepChange={onStepChange}
-          className={classes.stepWizard}
-        >
+        <StepWizard onStepChange={onStepChange}>
           <Name
             firstName={firstName}
             lastName={lastName}
@@ -362,7 +394,6 @@ export default function Form() {
             handleStepChange={handleStepChange}
             errors={errors}
           />
-
           <ContactNumber
             contactNumber1={contactNumber1}
             handleChange={handleChange}
@@ -375,10 +406,20 @@ export default function Form() {
             handleStepChange={handleStepChange}
             errors={errors}
           />
+          <Unit
+            unit={unit}
+            handleChange={handleUnitChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
+          <DateOfBirth
+            dob={dob}
+            handleChange={handleDateChange}
+            handleStepChange={handleStepChange}
+            errors={errors}
+          />
         </StepWizard>
       </div>
-
-      {/* {demo && SW && <ControlButtons StepWiz={SW} />} */}
     </div>
   );
 }
