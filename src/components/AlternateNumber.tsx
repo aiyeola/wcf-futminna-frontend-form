@@ -16,7 +16,8 @@ export default function AlternateNumber({
   return (
     <>
       <Typography variant="h5" paragraph>
-        Most likely you have another one
+        Most likely you have another one,
+        <br /> otherwise, no qualms!
       </Typography>
 
       <InputField
