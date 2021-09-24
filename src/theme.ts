@@ -31,9 +31,6 @@ let theme: Theme = createTheme({
     },
   },
   props: {
-    MuiLink: {
-      underline: 'none',
-    },
     MuiButton: {
       variant: 'contained',
       disableElevation: true,
@@ -43,7 +40,6 @@ let theme: Theme = createTheme({
       variant: 'outlined',
       type: 'text',
       size: 'small',
-      fullWidth: true,
     },
     MuiFormControl: {
       size: 'small',
@@ -65,11 +61,6 @@ let theme: Theme = createTheme({
     },
   },
   overrides: {
-    MuiTab: {
-      root: {
-        textTransform: 'none',
-      },
-    },
     MuiButton: {
       contained: {
         fontSize: 18,
@@ -78,11 +69,7 @@ let theme: Theme = createTheme({
         backgroundColor: '#f12424',
       },
     },
-    MuiListItemIcon: {
-      root: {
-        minWidth: 40,
-      },
-    },
+
     MuiFormHelperText: {
       root: {
         '&.Mui-error': {
@@ -90,10 +77,31 @@ let theme: Theme = createTheme({
           marginTop: 40,
         },
       },
+
+      marginDense: {
+        marginTop: 0,
+      },
     },
     MuiFormLabel: {
       root: {
         fontWeight: 600,
+      },
+    },
+    MuiFormGroup: {
+      root: {
+        flexDirection: 'row',
+      },
+    },
+    MuiPaper: {
+      root: {
+        backgroundColor: 'inherit',
+      },
+    },
+    MuiStepLabel: {
+      label: {
+        '&.MuiStepLabel-alternativeLabel': {
+          marginTop: 12,
+        },
       },
     },
   },
