@@ -17,5 +17,13 @@ declare module 'little-state-machine' {
       contactNumber1: string;
       contactNumber2?: string;
     };
+    academicInfo: {
+      campus: string;
+      department: string;
+      level: string;
+    };
+    fellowshipInfo: {
+      unit: string[];
+    };
   }
 }

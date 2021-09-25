@@ -19,3 +19,23 @@ export function updateContactInfo(state: GlobalState, payload) {
     },
   };
 }
+
+export function updateAcademicInfo(state: GlobalState, payload) {
+  return {
+    ...state,
+    academicInfo: {
+      ...state.academicInfo,
+      ...payload,
+    },
+  };
+}
+
+export function updateFellowshipInfo(state: GlobalState, payload) {
+  return {
+    ...state,
+    fellowshipInfo: {
+      ...state.fellowshipInfo,
+      ...payload,
+    },
+  };
+}

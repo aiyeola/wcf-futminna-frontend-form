@@ -34,6 +34,14 @@ createStore({
     contactNumber1: '',
     contactNumber2: '',
   },
+  academicInfo: {
+    campus: '',
+    department: '',
+    level: '',
+  },
+  fellowshipInfo: {
+    unit: [''],
+  },
 });
 
 function App({ Component, pageProps }: AppProps) {
