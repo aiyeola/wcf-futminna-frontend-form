@@ -3,7 +3,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useStateMachine, GlobalState } from 'little-state-machine';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -24,11 +23,6 @@ import { personalInfoSchema } from '@helpers/validator';
 import { states } from '@helpers/states';
 
 const useStyles = makeStyles({
-  // helperText: {
-  //   '& .MuiFormHelperText-root.Mui-error': {
-  //     marginTop: 80,
-  //   },
-  // },
   legend: {
     '& fieldset legend': {
       width: 78,
@@ -52,8 +46,6 @@ export default function PersonalInfo({ ...stepWizardChildProps }) {
     //@ts-ignore
     resolver: yupResolver(personalInfoSchema),
   });
-
-  console.log('errors: ', errors);
 
   const onSubmit = (data) => {
     actions.updatePersonalInfo(data);
@@ -172,7 +164,7 @@ export default function PersonalInfo({ ...stepWizardChildProps }) {
                   <option aria-label="None" value={0} />
                   {React.Children.toArray(
                     states.map((state) => (
-                      <option value={state}>{state}</option>
+                      <option value={state.value}>{state.name}</option>
                     )),
                   )}
                 </Select>
