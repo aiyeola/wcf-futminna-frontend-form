@@ -1,3 +1,5 @@
+[![Deployment Status](https://img.shields.io/endpoint?url=https://devx.sh/api/deployment)](https://devx.sh)
+
 # WCF FUTMinna - Data Project
 
 ## How to Install and run the application
