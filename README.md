@@ -1,4 +1,4 @@
-[![Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fdevx.sh%2Fapi%2Fdeployment)](https://devx.sh)
+[![Deployment Status](https://img.shields.io/endpoint?url=https://wcf-futminna-frontend-form.vercel.app/api/deployment)](https://devx.sh)
 
 # WCF FUTMinna - Data Project
 
