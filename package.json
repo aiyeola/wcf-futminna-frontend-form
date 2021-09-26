@@ -22,7 +22,6 @@
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
     "date-fns": "^2.23.0",
-    "deployment-badge": "^1.1.0",
     "little-state-machine": "^4.1.2",
     "little-state-machine-devtools": "^2.0.1",
     "next": "^11.1.0",

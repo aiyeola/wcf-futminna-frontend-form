@@ -1,5 +1,3 @@
-[![Deployment Status](https://img.shields.io/endpoint?url=https://wcf-futminna-frontend-form.vercel.app/api/deployment)](https://devx.sh)
-
 # WCF FUTMinna - Data Project
 
 ## How to Install and run the application
